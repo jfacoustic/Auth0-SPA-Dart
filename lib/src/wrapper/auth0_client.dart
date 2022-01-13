@@ -11,6 +11,12 @@ class Auth0Client {
       : _client = interop.Auth0Client(
             interop.Auth0ClientOptions(client_id: clientId, domain: domain));
 
+  Auth0Client.fromJavascript(
+      {required this.clientId,
+      required this.domain,
+      required interop.Auth0Client jsClient})
+      : _client = jsClient;
+
   Future<dynamic> handleRedirectCallback() async {
     return await promiseToFuture(_client.handleRedirectCallback());
   }
