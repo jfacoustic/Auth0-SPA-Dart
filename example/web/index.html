@@ -9,11 +9,17 @@
     <title>example</title>
     <link rel="stylesheet" href="styles.css">
     <script defer src="main.dart.js"></script>
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.19/auth0-spa-js.production.js"></script>
+    <script>
+      window.Auth0Client = Auth0Client;
+    </script>
 </head>
 
 <body>
 
   <div id="output"></div>
+  <button id="login_with_popup" onclick="loginWithPopup()">Login with popup</button>
+  <button id="get_token_silently" onclick="getTokenSilently()">Get token silently</button>
 
 </body>
 </html>
