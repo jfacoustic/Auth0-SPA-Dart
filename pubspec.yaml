@@ -1,11 +1,10 @@
 name: auth0_spa_dart
-description: A dart wrapper for auth0-spa-js 
+description: A dart wrapper for auth0-spa-js
 version: 1.0.0
 repository: https://github.com/jfacoustic/Auth0-SPA-Dart
 
 environment:
-  sdk: '>=2.15.1 <3.0.0'
-
+  sdk: ">=2.15.1 <3.0.0"
 
 dependencies:
   js: ^0.6.3
