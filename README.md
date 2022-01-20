@@ -1,5 +1,7 @@
 # Auth0-SPA-Dart
 
+https://pub.dev/packages/auth0_spa_dart
+
 ## Features
 
 Dart wrapper for [auth0-spa-js](https://github.com/auth0/auth0-spa-js#documentation)
