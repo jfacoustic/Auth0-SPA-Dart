@@ -12,7 +12,7 @@ class Auth0Client {
   external buildLogoutUrl();
   external checkSession();
   external getIdTokenClaims();
-  external getTokenSilently();
+  external getTokenSilently(GetTokenSilentlyOptions options);
   external getTokenWithPopup();
   external getUser();
   external handleRedirectCallback();
@@ -25,9 +25,15 @@ class Auth0Client {
 @JS()
 @anonymous
 class Auth0ClientOptions {
-  external factory Auth0ClientOptions({String client_id, String domain});
+  external factory Auth0ClientOptions(
+      {String client_id,
+      String domain,
+      bool useRefreshTokens = false,
+      String cacheLocation = "memory"});
   external String get client_id;
   external String get domain;
+  external bool get useRefreshTokens;
+  external String get cacheLocation;
 }
 
 @JS()
@@ -35,4 +41,11 @@ class Auth0ClientOptions {
 class RedirectLoginOptions {
   external factory RedirectLoginOptions({String redirect_uri});
   external String get redirect_uri;
+}
+
+@JS()
+@anonymous
+class GetTokenSilentlyOptions {
+  external factory GetTokenSilentlyOptions({bool detailedResponse = false});
+  external bool get detailedResponse;
 }

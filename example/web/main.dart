@@ -18,13 +18,29 @@ external set _getTokenSilently(void Function() f);
 @JS()
 external void getTokenSilently();
 
+@JS('console.log')
+external void consoleLog(dynamic data);
+
 void main() async {
   querySelector('#output')?.text = 'Your Dart app is running.';
-  final client = await createAuth0Client(clientId: clientId, domain: domain);
+
+  // Use localstorage to persist tokens across page refreshes/sessions.
+  // default value is memory, in which user must reauthenticate on every page-load.
+  final client = await createAuth0Client(
+      clientId: clientId, domain: domain, useRefreshTokens: true, cacheLocation: "localstorage");
+  try {
+    // Detailed response includes accessToken, idToken, and expiresIn.
+    // Default value is false, which only responds with accessToken.
+    final token = await client.getTokenSilently(detailedResponse: true);
+    consoleLog(token);
+  } catch (e) {
+    consoleLog(e);
+  }
 
   _loginWithPopup = allowInterop(client.loginWithPopup);
+
   _getTokenSilently = allowInterop(() async {
-    final token = await client.getTokenSilently();
-    querySelector('#output')?.text = token;
+    final token = await client.getTokenSilently(detailedResponse: true);
+    consoleLog(token);
   });
 }

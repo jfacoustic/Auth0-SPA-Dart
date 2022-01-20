@@ -5,24 +5,27 @@ import '../interop/auth0_client.dart' as interop;
 class Auth0Client {
   final String clientId;
   final String domain;
+  final String cacheLocation;
   final interop.Auth0Client _client;
 
-  Auth0Client({required this.clientId, required this.domain})
+  Auth0Client({required this.clientId, required this.domain, this.cacheLocation = "memory"})
       : _client = interop.Auth0Client(
-            interop.Auth0ClientOptions(client_id: clientId, domain: domain));
+            interop.Auth0ClientOptions(client_id: clientId, domain: domain, cacheLocation: cacheLocation));
 
-  Auth0Client.fromJavascript(
-      {required this.clientId,
-      required this.domain,
-      required interop.Auth0Client jsClient})
-      : _client = jsClient;
+  Auth0Client.fromJavascript({
+    required this.clientId,
+    required this.domain,
+    this.cacheLocation = "memory",
+    required interop.Auth0Client jsClient,
+  }) : _client = jsClient;
 
   Future<dynamic> handleRedirectCallback() async {
     return await promiseToFuture(_client.handleRedirectCallback());
   }
 
-  Future<String> getTokenSilently() async {
-    return await promiseToFuture(_client.getTokenSilently());
+  Future<dynamic> getTokenSilently({bool detailedResponse = false}) async {
+    return await promiseToFuture(_client.getTokenSilently(
+        interop.GetTokenSilentlyOptions(detailedResponse: detailedResponse)));
   }
 
   Future<bool> isAuthenticated() async {
