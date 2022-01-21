@@ -1,5 +1,7 @@
 import 'dart:js_util';
 
+import 'package:js/js.dart';
+
 import '../interop/auth0_client.dart' as interop;
 
 class Auth0Client {
@@ -8,9 +10,12 @@ class Auth0Client {
   final String cacheLocation;
   final interop.Auth0Client _client;
 
-  Auth0Client({required this.clientId, required this.domain, this.cacheLocation = "memory"})
-      : _client = interop.Auth0Client(
-            interop.Auth0ClientOptions(client_id: clientId, domain: domain, cacheLocation: cacheLocation));
+  Auth0Client(
+      {required this.clientId,
+      required this.domain,
+      this.cacheLocation = "memory"})
+      : _client = interop.Auth0Client(interop.Auth0ClientOptions(
+            client_id: clientId, domain: domain, cacheLocation: cacheLocation));
 
   Auth0Client.fromJavascript({
     required this.clientId,
@@ -23,9 +28,20 @@ class Auth0Client {
     return await promiseToFuture(_client.handleRedirectCallback());
   }
 
-  Future<dynamic> getTokenSilently({bool detailedResponse = false}) async {
-    return await promiseToFuture(_client.getTokenSilently(
+  Future<TokenResponse> getTokenSilently(
+      {bool detailedResponse = false}) async {
+    final response = await promiseToFuture(_client.getTokenSilently(
         interop.GetTokenSilentlyOptions(detailedResponse: detailedResponse)));
+
+    if (response.runtimeType == String) {
+      return TokenResponse(accessToken: response);
+    }
+    final accessToken = getProperty(response, "access_token");
+    final idToken = getProperty(response, "id_token");
+    final expiresIn = getProperty(response, "expires_in");
+
+    return TokenResponse(
+        accessToken: accessToken, idToken: idToken, expiresIn: expiresIn);
   }
 
   Future<bool> isAuthenticated() async {
@@ -40,4 +56,12 @@ class Auth0Client {
     return await promiseToFuture(_client.loginWithRedirect(
         interop.RedirectLoginOptions(redirect_uri: redirectUri)));
   }
+}
+
+class TokenResponse {
+  final String? accessToken;
+  final String? idToken;
+  final int? expiresIn;
+
+  TokenResponse({this.accessToken, this.idToken, this.expiresIn});
 }
