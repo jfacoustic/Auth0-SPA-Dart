@@ -13,12 +13,19 @@
   </head>
 
   <body>
-    <div id="output"></div>
+    <h1>Auth0 SPA Dart Example</h1>
     <button id="login_with_popup" onclick="loginWithPopup()">
       Login with popup
     </button>
     <button id="get_token_silently" onclick="getTokenSilently()">
       Get token silently
     </button>
+
+    <h3>Access Token:</h3>
+    <p id="access_token"></p>
+    <h3>Id Token:</h3>
+    <p id="id_token"></p>
+    <h3>Expires In:</h3>
+    <p id="expires_in"></p>
   </body>
 </html>
