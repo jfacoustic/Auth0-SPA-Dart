@@ -29,9 +29,10 @@ class Auth0Client {
   }
 
   Future<TokenResponse> getTokenSilently(
-      {bool detailedResponse = false}) async {
+      {bool detailedResponse = false, String? audience}) async {
     final response = await promiseToFuture(_client.getTokenSilently(
-        interop.GetTokenSilentlyOptions(detailedResponse: detailedResponse)));
+        interop.GetTokenSilentlyOptions(
+            detailedResponse: detailedResponse, audience: audience)));
 
     if (response.runtimeType == String) {
       return TokenResponse(accessToken: response);
@@ -48,8 +49,9 @@ class Auth0Client {
     return await promiseToFuture(_client.isAuthenticated());
   }
 
-  Future<void> loginWithPopup() async {
-    await promiseToFuture(_client.loginWithPopup());
+  Future<void> loginWithPopup({String? audience, String? scope}) async {
+    await promiseToFuture(_client.loginWithPopup(
+        interop.LoginWithPopupOptions(audience: audience, scope: scope)));
   }
 
   Future<String?> loginWithRedirect({String redirectUri = ''}) async {

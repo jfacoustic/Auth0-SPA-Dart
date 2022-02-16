@@ -3,6 +3,8 @@
 @JS()
 library auth0_spa;
 
+import 'dart:html';
+
 import 'package:js/js.dart';
 
 @JS('Auth0Client')
@@ -17,7 +19,7 @@ class Auth0Client {
   external getUser();
   external handleRedirectCallback();
   external isAuthenticated();
-  external loginWithPopup();
+  external loginWithPopup(LoginWithPopupOptions options);
   external loginWithRedirect(RedirectLoginOptions options);
   external logout();
 }
@@ -46,6 +48,16 @@ class RedirectLoginOptions {
 @JS()
 @anonymous
 class GetTokenSilentlyOptions {
-  external factory GetTokenSilentlyOptions({bool detailedResponse = false});
+  external factory GetTokenSilentlyOptions(
+      {bool detailedResponse = false, String? audience});
   external bool get detailedResponse;
+  external String? get audience;
+}
+
+@JS()
+@anonymous
+class LoginWithPopupOptions {
+  external factory LoginWithPopupOptions({String? audience, String? scope});
+  external bool get detailedResponse;
+  external String? get audience;
 }
