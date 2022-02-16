@@ -1,3 +1,7 @@
+# 1.0.2
+
+- Add audience to getTokenSilently()
+- Add audience and scope to loginWithPopup()
 ## 1.0.1
 
 - Add typed token response
